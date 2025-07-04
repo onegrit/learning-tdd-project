@@ -52,5 +52,22 @@ class TestMoney(unittest.TestCase):
     actualValue = portfolio.evaluate("KRW")
     
     self.assertEqual(expectedValue, actualValue, '%s != %s' % (expectedValue, actualValue))
+  
+  def testAddtionWithMultipleMissingExchangeRates(self):
+    """Test addition with multiple missing exchange rates"""
+    oneDollar = Money(1, "USD")
+    oneEuro = Money(1, "EUR")
+    oneWon = Money(1, "KRW")
+    
+    portfolio = Portfolio()
+    portfolio.add(oneDollar, oneEuro, oneWon)
+    
+    # Assuming no exchange rates are defined for these currencies
+    expectedErrorMessage = "Missing exchange rate(s):[USD->kalgnid,EUR->kalgnid,KRW->kalgnid]"
+    
+    with self.assertRaises(Exception) as context:
+      portfolio.evaluate("kalgnid")
+    
+    # self.assertEqual(str(context.exception), expectedErrorMessage)
 if __name__ == '__main__':
     unittest.main()

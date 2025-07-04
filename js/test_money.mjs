@@ -38,6 +38,22 @@ class MoneyTest {
       `Expected: ${JSON.stringify(expectedValue)}, got: ${JSON.stringify(portfolio.evaluate("KRW"))}`);
   }
 
+
+  testAdditionWithMultipleMissingExchangeRates() {
+    let oneDollar = new Money(1, "USD");
+    let oneEuro = new Money(1, "EUR");
+    let oneWon = new Money(1, "KRW");
+    let portfolio = new Portfolio();
+    portfolio.add(oneDollar, oneEuro, oneWon);
+
+    let expectedError = new Error("Missing exchange rate(s):[USD->kalgnid,EUR->kalgnid,KRW->kalgnid]");
+
+    assert.throws(() => {
+      portfolio.evaluate("kalgnid");
+    }, expectedError)
+
+  }
+
   getAllTestMethods() {
     let moneyPrototype = MoneyTest.prototype;
     let allProps = Object.getOwnPropertyNames(moneyPrototype);
