@@ -1,6 +1,7 @@
 import functools
 import operator
 from money import Money
+from bank import Bank
 
 class Portfolio:
   def __init__(self):
@@ -27,15 +28,15 @@ class Portfolio:
     key = f"{m.currency}->{currency}"
     return m.amount * exchangeRates[key]  
   
-  def evaluate(self, currency):
+  def evaluate(self,aBank:Bank, currency:str):
     failures = []
     total = 0.0
 
     for m in self.moneys:
       try:
-        total += self.__convert(m, currency)
-      except KeyError as ke:
-        failures.append(ke.args[0])
+        total += aBank.convert(m, currency).amount
+      except Exception as ex:
+        failures.append(ex)
 
     if len(failures) > 0:
       # failures_str = ','.join(str(f) for f in failures)
