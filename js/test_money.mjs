@@ -27,6 +27,17 @@ class MoneyTest {
       `Expected: ${JSON.stringify(thirtyEuros)}, got: ${JSON.stringify(portfolio.evaluate("EUR"))}`);
   }
 
+  testAddtionOfDollarsAndWons() {
+    const oneDollar = new Money(1, "USD");
+    const elevenHundredWon = new Money(1100, "KRW");
+    let portfolio = new Portfolio();
+    portfolio.add(oneDollar, elevenHundredWon);
+
+    let expectedValue = new Money(2200, "KRW"); // Assuming 1 USD = 1000 KRW for simplicity
+    assert.deepStrictEqual(portfolio.evaluate("KRW"), expectedValue,
+      `Expected: ${JSON.stringify(expectedValue)}, got: ${JSON.stringify(portfolio.evaluate("KRW"))}`);
+  }
+
   getAllTestMethods() {
     let moneyPrototype = MoneyTest.prototype;
     let allProps = Object.getOwnPropertyNames(moneyPrototype);
